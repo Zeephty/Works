@@ -21,7 +21,7 @@ class Book(QMainWindow, menuForm.Ui_MainWindow):
         if self.list[-1]:
             self.pixmap = QPixmap(self.list[-1]).scaled(150, 150)
         else:
-            self.pixmap = QPixmap("images\\default.png").scaled(150, 150)
+            self.pixmap = QPixmap("images/default.png").scaled(150, 150)
 
         self.labelName.setText(self.list[1])
         self.labelAuthor.setText(self.list[2])
@@ -37,15 +37,17 @@ class MyWidget(QMainWindow, mainForm.Ui_MainWindow):
 
         self.setupUi(self)
 
-        self.pushButton.clicked.connect(self.updateTable)     
+        self.pushButton.clicked.connect(self.updateTable)
+
+        self.pushButton.setText("Искать")
     
     def updateTable(self):
         con = sqlite3.connect("works.sqlite")
         cur = con.cursor()
         if self.comboBox.currentIndex() == 1:
-            text = f"""SELECT * FROM Works where Works.title like '{self.lineEdit.text()}%'"""
+            text = f"""SELECT * FROM Works where Works.title like '%{self.lineEdit.text()}%'"""
         else:
-            text = f"""SELECT * FROM Works where Works.author like '{self.lineEdit.text()}%'"""
+            text = f"""SELECT * FROM Works where Works.author like '%{self.lineEdit.text()}%'"""
         self.p = cur.execute(text).fetchall()
         con.close()
         self.tableWidget.setColumnCount(1)
